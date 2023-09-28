@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qin_chat_flutter/components/room_list_item.dart';
-import 'package:qin_chat_flutter/main.dart';
+
+import '../states/home_state.dart';
 
 class RoomList extends StatelessWidget {
-  const RoomList({super.key});
-
+  const RoomList({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     var roomList = Provider
@@ -15,9 +15,8 @@ class RoomList extends StatelessWidget {
         restorationId:'room_item_list',
       padding: const EdgeInsets.symmetric(vertical: 8),
       children: [
-        for (int i = 0; i < 10; i++) const RoomListItem()
+        for (var value in roomList)  RoomListItem(item: value,)
       ],
     );
   }
-
 }

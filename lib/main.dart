@@ -1,10 +1,9 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qin_chat_flutter/components/room_list.dart';
+import 'package:qin_chat_flutter/states/home_state.dart';
 
-void main() {
+void main() async{
   runApp(const MyApp());
 }
 
@@ -21,19 +20,8 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             useMaterial3: true,
           ),
-          home: MyHomePage(),
+          home: const MyHomePage(),
         ));
-  }
-}
-
-class MyHomeState extends ChangeNotifier {
-  var roomList = [];
-
-  int word = 1;
-
-  void add() {
-    word++;
-    notifyListeners();
   }
 }
 
@@ -55,64 +43,57 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<MyHomeState>();
-    var word = appState.word;
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 70,
+          toolbarHeight: 70,
           title: Row(
-        children: [
-          const CircleAvatar(
-            radius: 24,
-            backgroundImage: AssetImage('images/avatar1.jpg'),
-          ),
-          const SizedBox(
-            width: 20,
-          ),
-          Expanded(
-              child: TextField(
-            controller: textFieldSearch,
-            cursorColor: Colors.black,
-            style: const TextStyle(color: Colors.black),
-            onChanged: (val) {
-              setState(() {
-                searchResult = val;
-              });
-            },
-            decoration: InputDecoration(
-                suffixIcon: IconButton(
-                  icon: const Icon(Icons.search),
-                  color: Colors.grey,
+            children: [
+              const CircleAvatar(
+                radius: 24,
+                backgroundImage: AssetImage('images/avatar1.jpg'),
+              ),
+              const SizedBox(
+                width: 20,
+              ),
+              Expanded(
+                  child: TextField(
+                controller: textFieldSearch,
+                cursorColor: Colors.black,
+                style: const TextStyle(color: Colors.black),
+                onChanged: (val) {
+                  setState(() {});
+                },
+                decoration: InputDecoration(
+                    suffixIcon: IconButton(
+                      icon: const Icon(Icons.search),
+                      color: Colors.grey,
+                      onPressed: () {
+                        setState(() {});
+                      },
+                    ),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(50),
+                        borderSide:
+                            const BorderSide(color: Colors.grey, width: 1.0)),
+                    focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(50),
+                        borderSide:
+                            const BorderSide(color: Colors.grey, width: 1.0)),
+                    hintText: '输入内容',
+                    fillColor: const Color.fromRGBO(255, 255, 255, 0.5),
+                    filled: true,
+                    contentPadding: const EdgeInsets.all(10)),
+              )),
+              const SizedBox(
+                width: 16,
+              ),
+              IconButton(
                   onPressed: () {
-                    setState(() {
-                      searchResult = textFieldSearch.text;
-                    });
+                      appState.addRoom();
                   },
-                ),
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(50),
-                    borderSide:
-                        const BorderSide(color: Colors.grey, width: 1.0)),
-                focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(50),
-                    borderSide:
-                        const BorderSide(color: Colors.grey, width: 1.0)),
-                hintText: '输入内容',
-                fillColor: const Color.fromRGBO(255, 255, 255, 0.5),
-                filled: true,
-                contentPadding: const EdgeInsets.all(10)),
+                  icon: const Icon(Icons.settings))
+            ],
           )),
-          const SizedBox(
-            width: 16,
-          ),
-          IconButton(
-              onPressed: () {
-                setState(() {
-                  searchResult = 'setting';
-                });
-              },
-              icon: const Icon(Icons.settings))
-        ],
-      )),
       body: const RoomList(),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectIndex,
@@ -135,34 +116,6 @@ class _MyHomePageState extends State<MyHomePage> {
             _selectIndex = index;
           });
         },
-      ),
-    );
-  }
-}
-
-class WordText extends StatelessWidget {
-  const WordText({
-    super.key,
-    required this.word,
-  });
-
-  final String word;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final style = theme.textTheme.displaySmall!.copyWith(
-      color: theme.colorScheme.onPrimary,
-    );
-
-    return Card(
-      color: theme.colorScheme.primary,
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Text(
-          'tap count : ${word.toString()}',
-          style: style,
-        ),
       ),
     );
   }
