@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qin_chat_flutter/components/room_list.dart';
 import 'package:qin_chat_flutter/states/home_state.dart';
+import 'package:qin_chat_flutter/states/sys_state_local.dart';
 
-void main() async{
+void main() async {
   runApp(const MyApp());
 }
 
@@ -13,10 +14,13 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    SysStateLocal(
+        sysWidth: MediaQuery.of(context).size.width,
+        sysHeight: MediaQuery.of(context).size.height);
     return ChangeNotifierProvider(
         create: (context) => MyHomeState(),
         child: MaterialApp(
-          title: 'Flutter Demo',
+          title: 'Qin_Chat',
           theme: ThemeData(
             useMaterial3: true,
           ),
@@ -89,7 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               IconButton(
                   onPressed: () {
-                      appState.addRoom();
+                    appState.addRoom();
                   },
                   icon: const Icon(Icons.settings))
             ],

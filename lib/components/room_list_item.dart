@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:qin_chat_flutter/pages/friend_chat_page.dart';
+import 'package:qin_chat_flutter/utils/menu_util.dart';
 import '../states/room_state.dart';
 
 class RoomListItem extends StatefulWidget {
@@ -26,11 +27,12 @@ class _RoomListItem extends State<RoomListItem> {
           });
         },
         onTap: () {
+          _navigateToChatDetail(context,item);
           item.add('最新的一条消息最新的一条消息最新的一条消息最新的一条消息最新的一条消息',
               ('${DateTime.now().hour}:${DateTime.now().minute}'));
         },
-        onLongPress: (){
-          _showMenu(context);
+        onLongPress: () {
+          MenuUtil().openRoomMenu(context);
         },
         onPanCancel: () {
           setState(() {
@@ -118,41 +120,13 @@ class _RoomListItem extends State<RoomListItem> {
       ),
     );
   }
+}
 
-  void _showMenu(BuildContext context) {
-    final overlay = Overlay.of(context)!.context.findRenderObject()! as RenderBox;
-    final RenderBox box = context.findRenderObject()! as RenderBox;
-    final Offset topLeftPosition = box.localToGlobal(Offset.zero, ancestor: overlay);
-
-    showMenu(
-      context: context,
-      position: RelativeRect.fromLTRB(
-        topLeftPosition.dx,
-        topLeftPosition.dy - 50, // 此处可以调整弹出菜单的位置，使其显示在被长按元素的正上方
-        overlay.size.width - topLeftPosition.dx - box.size.width,
-        overlay.size.height - topLeftPosition.dy,
-      ),
-      items: <PopupMenuEntry<int>>[
-        const PopupMenuItem<int>(
-          value: 1,
-          child: Text('Delete'),
-        ),
-        const PopupMenuItem<int>(
-          value: 2,
-          child: Text('Select'),
-        ),
-      ],
-      elevation: 8.0,
-    ).then<void>((int? selectedItem) {
-      if (selectedItem == null) return;
-      switch (selectedItem) {
-        case 1:
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Deleted Item')));
-          break;
-        case 2:
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Selected Item')));
-          break;
-      }
-    });
-  }
+void _navigateToChatDetail(BuildContext context, Room friend) {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => FriendChatPage(friend: friend),
+    ),
+  );
 }

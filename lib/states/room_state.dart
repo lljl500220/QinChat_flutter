@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 class Room extends ChangeNotifier {
-  late String roomName;
-  late String roomId;
-  late String roomAvatar;
-  late String lastMsg;
-  late String lastTime;
-  late int unread;
+  String roomName;
+  String roomId;
+  String roomAvatar;
+  String lastMsg;
+  String lastTime;
+  int unread;
 
   Room({
     required this.roomName,
