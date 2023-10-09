@@ -123,6 +123,6 @@ class _RoomListItem extends State<RoomListItem> {
 }
 
 void _navigateToChatDetail(BuildContext context, Room friend) {
-  Navigator.of(context).push(SlideRightRoute(page: ChangeNotifierProvider<Room>.value(
+  Navigator.of(context).push(ScaleAndSlideRoute(page: ChangeNotifierProvider<Room>.value(
       value: friend, child: FriendChatPage(friend: friend))));
 }
