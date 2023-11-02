@@ -2,8 +2,10 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:qin_chat_flutter/components/msg_me.dart';
 import 'package:qin_chat_flutter/states/room_state.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+
+import '../components/msg_other.dart';
 
 class FriendChatPage extends StatelessWidget {
   final Room friend;
@@ -16,54 +18,82 @@ class FriendChatPage extends StatelessWidget {
       return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          toolbarHeight: 80,
-          title: Row(
-            children: [
-              IconButton(
-                  iconSize: 36,
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  icon: const Icon(Icons.chevron_left)),
-              const SizedBox(width: 20),
-              Expanded(
-                  child: Center(
-                      child: Text(
-                friend.roomName,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ))),
-              const SizedBox(width: 20),
-              IconButton(
-                  iconSize: 30,
-                  onPressed: () {
-                    friend.add('${DateTime.now()}',
-                        ('${DateTime.now().hour}:${DateTime.now().minute}'));
-                  },
-                  icon: const Icon(Icons.more_vert)),
-            ],
-          ),
+          // toolbarHeight: 80,
+          //我需要替换appbar组件自带的返回按钮的图标
+          leading: IconButton(
+              iconSize: 36,
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: const Icon(Icons.chevron_left)),
+          title: Center(
+              child: Text(
+            friend.roomName,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          )),
+          actions: [
+            IconButton(
+                iconSize: 30,
+                onPressed: () {
+                  friend.add('${DateTime.now()}',
+                      ('${DateTime.now().hour}:${DateTime.now().minute}'));
+                  friend.addMsg(MsgList('这是一条测试消息${Random().nextInt(100)}',
+                      '${DateTime.now()}', 'me'));
+                },
+                icon: const Icon(Icons.more_vert)),
+          ],
         ),
         //我需要在body中使用一个瀑布流布局
-        body: MasonryGridView.count(
-          crossAxisCount: 4,
-          mainAxisSpacing: 4,
-          crossAxisSpacing: 4,
-          itemBuilder: (context, index) {
-            Color color = Color.fromARGB(
-              255,
-              Random().nextInt(256),
-              Random().nextInt(256),
-              Random().nextInt(256),
-            );
-
-            return Container(
-              height: (index % 5 + 1) * 100.0, // 定义方块的高度
-              color: color,
-            );
-          },
-        ),
+        body: _MessageList(friend.msgList),
       );
     });
+  }
+}
+
+class MsgList {
+  final String msg;
+  final String time;
+  final String userId;
+
+  MsgList(this.msg, this.time, this.userId);
+}
+
+class _MessageList extends StatefulWidget {
+  final List<MsgList> _msgList;
+
+  const _MessageList(this._msgList, {super.key});
+
+  @override
+  State<StatefulWidget> createState() => _MessageListState();
+}
+
+class _MessageListState extends State<_MessageList> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Expanded(
+          child: ListView.builder(
+              key: const PageStorageKey('_message_list'),
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              restorationId: '_message_list',
+              itemCount: widget._msgList.length,
+              itemBuilder: (context, index) {
+                MsgList msg = widget._msgList[index];
+                return msg.userId == 'other' ? MsgMe(msg) : MsgOther(msg);
+              }),
+        ),
+        const Padding(
+          padding: EdgeInsets.all(8.0),
+          child: TextField(
+            decoration: InputDecoration(
+              hintText: 'Enter text',
+              border: OutlineInputBorder(),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }

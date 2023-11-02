@@ -6,11 +6,11 @@ const String avatar = 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fsaf
 
 //请帮我优化这个类的代码，让它变得更加简洁
 class MyHomeState extends ChangeNotifier {
-  List<Room> roomList = [Room(roomName: '秦篆', roomId: '0001',roomAvatar:avatar),Room(roomName: 'luolj', roomId: '0002',roomAvatar:avatar)];
+  List<Room> roomList = [Room(roomName: '秦篆',msgList: [], roomId: '0001',roomAvatar:avatar),Room(roomName: 'luolj',msgList: [], roomId: '0002',roomAvatar:avatar)];
 
   //这个方法是用来添加一个房间的
   void addRoom() {
-    roomList.insert(0, Room(roomName: '秦篆${roomList.length}', roomId: '000${roomList.length}',roomAvatar:avatar));
+    roomList.insert(0, Room(roomName: '秦篆${roomList.length}',msgList: [], roomId: '000${roomList.length}',roomAvatar:avatar));
     notifyListeners();
   }
 }

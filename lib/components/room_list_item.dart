@@ -19,7 +19,7 @@ class _RoomListItem extends State<RoomListItem> {
   Widget build(BuildContext context) {
     return Consumer<Room>(builder: (context, room, child) {
       return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 20),
+        padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal:10),
         child: GestureDetector(
           onPanDown: (details) {
             setState(() {
@@ -43,12 +43,13 @@ class _RoomListItem extends State<RoomListItem> {
                 ? const Color.fromRGBO(0, 0, 0, 0.1)
                 : Colors.transparent,
             child: SizedBox(
-              height: 100,
+              height: 80,
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
-                    width: 100,
-                    height: 100,
+                    width: 60,
+                    height: 60,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         image: DecorationImage(
@@ -60,7 +61,7 @@ class _RoomListItem extends State<RoomListItem> {
                   Expanded(
                       child: Padding(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 10.0, vertical: 14),
+                        horizontal: 10.0, vertical: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -69,7 +70,7 @@ class _RoomListItem extends State<RoomListItem> {
                           '房间号:${room.roomName}',
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(fontSize: 20),
+                          style: const TextStyle(fontSize: 14),
                         ),
                         Text(
                           room.lastMsg,
@@ -80,18 +81,18 @@ class _RoomListItem extends State<RoomListItem> {
                     ),
                   )),
                   SizedBox(
-                    width: 100,
-                    height: 100,
+                    width: 40,
+                    height: 80,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 10.0, vertical: 14),
+                          horizontal: 0.0, vertical: 14),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
                             room.lastTime,
-                            style: const TextStyle(fontSize: 20),
+                            style: const TextStyle(fontSize: 14),
                           ),
                           Container(
                               decoration: BoxDecoration(
@@ -100,7 +101,7 @@ class _RoomListItem extends State<RoomListItem> {
                               child: room.unread != 0
                                   ? Padding(
                                       padding: const EdgeInsets.symmetric(
-                                          vertical: 4.0, horizontal: 14),
+                                          vertical: 2.0, horizontal: 10),
                                       child: Text(
                                         room.unread.toString(),
                                         style: const TextStyle(
@@ -123,6 +124,7 @@ class _RoomListItem extends State<RoomListItem> {
 }
 
 void _navigateToChatDetail(BuildContext context, Room friend) {
-  Navigator.of(context).push(ScaleAndSlideRoute(page: ChangeNotifierProvider<Room>.value(
-      value: friend, child: FriendChatPage(friend: friend))));
+  Navigator.of(context).push(ScaleAndSlideRoute(
+      page: ChangeNotifierProvider<Room>.value(
+          value: friend, child: FriendChatPage(friend: friend))));
 }

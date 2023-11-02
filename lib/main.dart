@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qin_chat_flutter/components/room_list.dart';
+import 'package:qin_chat_flutter/pages/gallery_page.dart';
 import 'package:qin_chat_flutter/states/home_state.dart';
 import 'package:qin_chat_flutter/states/sys_state_local.dart';
 
@@ -20,12 +21,14 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
         create: (context) => MyHomeState(),
         child: MaterialApp(
-          title: 'Qin_Chat',
-          theme: ThemeData(
-            useMaterial3: true,
-          ),
-          home: const MyHomePage(),
-        ));
+            title: 'Qin_Chat',
+            theme: ThemeData(
+              useMaterial3: true,
+            ),
+            home: const MyHomePage(),
+            routes: {
+              '/gallery': (context) => const GalleryPage(),
+            }));
   }
 }
 
@@ -48,56 +51,57 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     var appState = context.watch<MyHomeState>();
     return Scaffold(
-      appBar: AppBar(
-          toolbarHeight: 70,
-          title: Row(
-            children: [
-              const CircleAvatar(
-                radius: 24,
-                backgroundImage: AssetImage('images/avatar1.jpg'),
-              ),
-              const SizedBox(
-                width: 20,
-              ),
-              Expanded(
-                  child: TextField(
-                controller: textFieldSearch,
-                cursorColor: Colors.black,
-                style: const TextStyle(color: Colors.black),
-                onChanged: (val) {
-                  setState(() {});
-                },
-                decoration: InputDecoration(
-                    suffixIcon: IconButton(
-                      icon: const Icon(Icons.search),
-                      color: Colors.grey,
-                      onPressed: () {
-                        setState(() {});
-                      },
-                    ),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(50),
-                        borderSide:
-                            const BorderSide(color: Colors.grey, width: 1.0)),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(50),
-                        borderSide:
-                            const BorderSide(color: Colors.grey, width: 1.0)),
-                    hintText: '输入内容',
-                    fillColor: const Color.fromRGBO(255, 255, 255, 0.5),
-                    filled: true,
-                    contentPadding: const EdgeInsets.all(10)),
-              )),
-              const SizedBox(
-                width: 16,
-              ),
-              IconButton(
-                  onPressed: () {
-                    appState.addRoom();
+      appBar: _selectIndex == 0
+          ? AppBar(
+              title: Row(
+              children: [
+                const CircleAvatar(
+                  radius: 20,
+                  backgroundImage: AssetImage('images/avatar1.jpg'),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                    child: SizedBox(
+                      height: 40,
+                      child: TextField(
+                  controller: textFieldSearch,
+                  cursorColor: Colors.black,
+                  style: const TextStyle(color: Colors.black),
+                  onChanged: (val) {
+                      setState(() {});
                   },
-                  icon: const Icon(Icons.settings))
-            ],
-          )),
+                  decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                          icon: const Icon(Icons.search),
+                          color: Colors.grey,
+                          onPressed: () {
+                            setState(() {});
+                          },
+                        ),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(50),
+                            borderSide:
+                                const BorderSide(color: Colors.grey, width: 1.0)),
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(50),
+                            borderSide:
+                                const BorderSide(color: Colors.grey, width: 1.0)),
+                        hintText: '输入内容',
+                        fillColor: const Color.fromRGBO(255, 255, 255, 0.5),
+                        filled: true,
+                        contentPadding: const EdgeInsets.all(10)),
+                ),
+                    )),
+                IconButton(
+                    onPressed: () {
+                      appState.addRoom();
+                    },
+                    icon: const Icon(Icons.settings))
+              ],
+            ))
+          : null,
       body: const RoomList(),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectIndex,
@@ -110,6 +114,7 @@ class _MyHomePageState extends State<MyHomePage> {
             icon: Icon(Icons.group),
             label: "好友",
           ),
+          //点击这个按钮时我需要跳转到GalleryPage
           BottomNavigationBarItem(
             icon: Icon(Icons.photo_sharp),
             label: "画廊",
@@ -117,7 +122,11 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
         onTap: (index) {
           setState(() {
-            _selectIndex = index;
+            if (index == 2) {
+              Navigator.pushNamed(context, '/gallery');
+            } else {
+              _selectIndex = index;
+            }
           });
         },
       ),

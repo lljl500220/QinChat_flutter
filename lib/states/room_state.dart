@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:qin_chat_flutter/pages/friend_chat_page.dart';
 
 //这个类是用来管理首页的状态的
 class Room extends ChangeNotifier {
@@ -8,11 +9,13 @@ class Room extends ChangeNotifier {
   String lastMsg;
   String lastTime;
   int unread;
+  List<MsgList> msgList;
 
   Room({
     required this.roomName,
     required this.roomId,
     required this.roomAvatar,
+    required this.msgList,
     this.lastMsg = '',
     this.lastTime = '',
     this.unread = 0,
@@ -52,6 +55,16 @@ class Room extends ChangeNotifier {
 
   void changeUnread(int num) {
     unread = num;
+    notifyListeners();
+  }
+
+  void addMsg(MsgList msg) {
+    msgList.add(msg);
+    notifyListeners();
+  }
+
+  void deleteMsg(int index) {
+    msgList.removeAt(index);
     notifyListeners();
   }
 }
