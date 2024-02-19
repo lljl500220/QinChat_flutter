@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:qin_chat_flutter/components/room_list.dart';
 import 'package:qin_chat_flutter/pages/gallery_page.dart';
@@ -6,6 +7,8 @@ import 'package:qin_chat_flutter/states/home_state.dart';
 import 'package:qin_chat_flutter/states/sys_state_local.dart';
 
 void main() async {
+  //隐藏状态栏
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   runApp(const MyApp());
 }
 
@@ -64,15 +67,15 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 Expanded(
                     child: SizedBox(
-                      height: 40,
-                      child: TextField(
-                  controller: textFieldSearch,
-                  cursorColor: Colors.black,
-                  style: const TextStyle(color: Colors.black),
-                  onChanged: (val) {
-                      setState(() {});
-                  },
-                  decoration: InputDecoration(
+                  height: 40,
+                  child: TextField(
+                    controller: textFieldSearch,
+                    cursorColor: Colors.black,
+                    style: const TextStyle(color: Colors.black),
+                    onChanged: (val) {
+                      print(val);
+                    },
+                    decoration: InputDecoration(
                         suffixIcon: IconButton(
                           icon: const Icon(Icons.search),
                           color: Colors.grey,
@@ -82,18 +85,18 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(50),
-                            borderSide:
-                                const BorderSide(color: Colors.grey, width: 1.0)),
+                            borderSide: const BorderSide(
+                                color: Colors.grey, width: 1.0)),
                         focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(50),
-                            borderSide:
-                                const BorderSide(color: Colors.grey, width: 1.0)),
+                            borderSide: const BorderSide(
+                                color: Colors.grey, width: 1.0)),
                         hintText: '输入内容',
                         fillColor: const Color.fromRGBO(255, 255, 255, 0.5),
                         filled: true,
                         contentPadding: const EdgeInsets.all(10)),
-                ),
-                    )),
+                  ),
+                )),
                 IconButton(
                     onPressed: () {
                       appState.addRoom();
