@@ -19,7 +19,7 @@ class _RoomListItem extends State<RoomListItem> {
   Widget build(BuildContext context) {
     return Consumer<Room>(builder: (context, room, child) {
       return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal:10),
+        padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 10),
         child: GestureDetector(
           onPanDown: (details) {
             setState(() {
@@ -67,7 +67,7 @@ class _RoomListItem extends State<RoomListItem> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          '房间号:${room.roomName}',
+                          room.roomName,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(fontSize: 14),
@@ -91,6 +91,7 @@ class _RoomListItem extends State<RoomListItem> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
+                            //将lastTime格式化为MM:DD HH:MM
                             room.lastTime,
                             style: const TextStyle(fontSize: 14),
                           ),

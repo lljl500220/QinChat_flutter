@@ -1,4 +1,3 @@
-//实现一个flutter的路由，这个路由是一个滑动路由，这个路由的动画是从下滑动到上，这个路由的动画时间是300毫秒
 import 'package:flutter/cupertino.dart';
 
 class ScaleAndSlideRoute extends PageRouteBuilder {
@@ -16,7 +15,7 @@ class ScaleAndSlideRoute extends PageRouteBuilder {
             var curveTween = CurveTween(curve: Curves.easeInOut);
 
             // Driving the tween with the animation
-            var scaleAnimation = animation.drive(curveTween).drive(scaleTween);
+            var scaleAnimation = animation.drive(curveTween).drive(scaleTween );
 
             return ScaleTransition(
               scale: scaleAnimation,

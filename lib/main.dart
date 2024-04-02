@@ -52,7 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    var appState = context.watch<MyHomeState>();
+    var appState = context.watch<MyHomeState>();  //watch方法用于监听状态变化
     return Scaffold(
       appBar: _selectIndex == 0
           ? AppBar(

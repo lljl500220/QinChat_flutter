@@ -8,18 +8,17 @@ import '../states/home_state.dart';
 class RoomList extends StatelessWidget {
   const RoomList({Key? key}) : super(key: key);
 
-  //我需要实现一个列表，这个列表的数据源是一个数组，数组中的每一项都是一个对象，这个对象有两个属性，一个是头像，一个是名字
   @override
   Widget build(BuildContext context) {
     var roomList = Provider.of<MyHomeState>(context).roomList;
     return ListView.builder(
-      key: const PageStorageKey('room_item_list'),
-      restorationId: 'room_item_list',
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      itemCount: roomList.length,
-      itemBuilder: (context, index) {
+      key: const PageStorageKey('room_item_list'), //key和restorationId是为了保持滚动位置
+      restorationId: 'room_item_list', // restorationId是为了保持滚动位置
+      padding: const EdgeInsets.symmetric(vertical: 8), //设置ListView的padding
+      itemCount: roomList.length, //设置ListView的item数量
+      itemBuilder: (context, index) { //设置ListView的item
         var room = roomList[index];
-        return ChangeNotifierProvider<Room>.value(
+        return ChangeNotifierProvider<Room>.value( //使用ChangeNotifierProvider包裹RoomListItem
             value: room, child: const RoomListItem());
       },
     );

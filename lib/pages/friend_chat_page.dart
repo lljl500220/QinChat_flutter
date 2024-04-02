@@ -79,17 +79,18 @@ class _MessageListState extends State<_MessageList> {
               padding: const EdgeInsets.symmetric(vertical: 8),
               restorationId: '_message_list',
               itemCount: widget._msgList.length,
+              //设置背景色
               itemBuilder: (context, index) {
                 MsgList msg = widget._msgList[index];
                 return msg.userId == 'other' ? MsgMe(msg) : MsgOther(msg);
               }),
         ),
         const Padding(
-          padding: EdgeInsets.all(8.0),
+          padding: EdgeInsets.all(8.0), //EdgeInsets 是用来设置边距的
           child: TextField(
-            decoration: InputDecoration(
-              hintText: 'Enter text',
-              border: OutlineInputBorder(),
+            decoration: InputDecoration( //InputDecoration 是用来设置输入框的样式的
+              hintText: '', //设置输入框的提示文字
+              border: OutlineInputBorder(), //设置输入框的边框 OutlineInputBorder 是一个边框的样式
             ),
           ),
         ),
